@@ -23,5 +23,5 @@ def read_json(file_name):
 
 
 if __name__ == '__main__':
-    a = read_json('/Users/duan/OneDrive - Aerodefense/Uni-Stuttgart/WS19/Deep learning/project/nlu_traindev.tar.gz!/dev.json')
-    print(type(a))
+    a = read_json('/Users/duan/OneDrive - Aerodefense/Uni-Stuttgart/WS19/Deep learning/DeepDarkHomeword/ser_traindev.tar.gz!/dev.json')
+    print(a.samples[0])
