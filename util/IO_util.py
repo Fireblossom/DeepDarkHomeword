@@ -22,6 +22,44 @@ def read_json(file_name):
             return SERToBePredict(content)
 
 
+def write_json(file_name, corpus):
+    output_dict = {}
+    if type(corpus) == NLUToBePredict:
+        for sample in corpus.samples:
+            s = {
+                "intent": sample.intent,
+                "text": sample.text,
+                "slots": sample.slots
+            }
+            output_dict[sample.id] = s
+
+    elif type(corpus) == SERToBePredict:
+        for sample in corpus.samples:
+            s = {
+                "features": sample.features
+            }
+            if sample.label == 3:
+                s["valence"] = 1
+                s["activation"] = 1
+            elif sample.label == 2:
+                s["valence"] = 1
+                s["activation"] = 0
+            elif sample.label == 1:
+                s["valence"] = 0
+                s["activation"] = 1
+            elif sample.label == 0:
+                s["valence"] = 0
+                s["activation"] = 0
+            else:
+                raise ValueError
+            output_dict[sample.id] = s
+    else:
+        raise TypeError
+    with open(file_name, 'w') as file:
+        file.writelines(json.dumps(output_dict))
+
+
 if __name__ == '__main__':
-    a = read_json('/Users/duan/OneDrive - Aerodefense/Uni-Stuttgart/WS19/Deep learning/DeepDarkHomeword/ser_traindev.tar.gz!/dev.json')
+    a = read_json(
+        '/Users/duan/OneDrive - Aerodefense/Uni-Stuttgart/WS19/Deep learning/DeepDarkHomeword/ser_traindev.tar.gz!/dev.json')
     print(a.samples[0])

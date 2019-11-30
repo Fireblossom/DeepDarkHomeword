@@ -11,11 +11,11 @@ class NLUCorpus:
         for i in texts:
             item = texts[i]
             intent = item['intent']
-            slot = item['slots']
+            slots = item['slots']
             positions = item['positions']
             text = item['text']
             tokens = tokenizer(item['text'])
-            sample = NLUSample(i, text, tokens, intent, slot, positions)
+            sample = NLUSample(i, text, tokens, intent, slots, positions)
             self.samples.append(sample)
 
 
