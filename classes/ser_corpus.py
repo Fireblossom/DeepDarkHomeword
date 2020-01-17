@@ -1,5 +1,5 @@
 import numpy as np
-
+padding = [0] * 26
 
 class SERCorpus:
     def __init__(self, voice):
@@ -17,6 +17,8 @@ class SERCorpus:
             else:
                 raise AssertionError
             features = item['features']
+            while len(features) < 1707:
+                features.append(padding)
             sample = SERSample(i, features, label)
             self.samples.append(sample)
 
@@ -27,8 +29,8 @@ class SERCorpus:
         for sample in self.samples:
             x.append(sample.features)
             y.append(sample.label)
-        x_train, x_test = x[:split_index], x[split_index:]
-        y_train, y_test = y[:split_index], y[split_index:]
+        x_train, x_test = np.array(x[split_index:]), np.array(x[:split_index])
+        y_train, y_test = np.array(y[split_index:]), np.array(y[:split_index])
         return (x_train, y_train), (x_test, y_test)
 
 
@@ -38,8 +40,16 @@ class SERToBePredict:
         for i in voice:
             item = voice[i]
             features = item['features']
+            while len(features) < 1707:
+                features.append(padding)
             sample = SERSample(i, features)
             self.samples.append(sample)
+
+    def load_data(self):
+        x = []
+        for sample in self.samples:
+            x.append(sample.features)
+        return np.array(x)
 
     def predict(self, model):
         for sample in self.samples:
@@ -50,7 +60,7 @@ class SERToBePredict:
 class SERSample:
     def __init__(self, id, features, label=None):
         self.id = id
-        self.features = features
+        self.features = features# - np.mean(features)
         self.label = label
 
     def set_label(self, label):

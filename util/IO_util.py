@@ -62,4 +62,11 @@ def write_json(file_name, corpus):
 if __name__ == '__main__':
     a = read_json(
         '/Users/duan/OneDrive - Aerodefense/Uni-Stuttgart/WS19/Deep learning/DeepDarkHomeword/ser_traindev.tar.gz!/dev.json')
-    print(a.samples[0])
+    gen = {}
+    import random
+    for i in range(len(a.samples)):
+        gen[str(i)] = {"valence": random.randrange(0, 2, 1),
+                       "activation": random.randrange(0, 2, 1)}
+    with open('sertest.json', 'w') as f:
+        import json
+        f.write(json.dumps(gen, indent=2))
